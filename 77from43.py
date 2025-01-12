@@ -17,7 +17,7 @@ print("QiskitRuntimeService loaded and authenticated!")
 
 N = 77  # Number to factor
 a = 43  # New value with period 2
-N_COUNT = 12  # Reduced number of counting qubits since period is 2
+N_COUNT = 12  # Experimental number of N_Count
 
 def c_amod77(a, power):
     """
@@ -115,8 +115,8 @@ counts_dict = pub_result.data.c.get_counts()  # 'c' is the auto-named classical 
 shots_used = sum(counts_dict.values())
 counts_prob = {bitstring: c / shots_used for bitstring, c in counts_dict.items()}
 
-print("\n===== Top 100 Measurement Results =====")
-sorted_counts = sorted(counts_prob.items(), key=lambda x: x[1], reverse=True)[:100]
+print("\n===== Top 10 Measurement Results =====")
+sorted_counts = sorted(counts_prob.items(), key=lambda x: x[1], reverse=True)[:10]
 
 for i, (bitstring, prob) in enumerate(sorted_counts, 1):
     decimal = int(bitstring, 2)
