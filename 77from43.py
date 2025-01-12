@@ -10,14 +10,14 @@ print("Imports Successful")
 
 service = QiskitRuntimeService(
     channel="ibm_quantum",
-    token='Token'
+    token='your_token_here'
 )
 
 print("QiskitRuntimeService loaded and authenticated!")
 
 N = 77  # Number to factor
 a = 43  # New value with period 2
-N_COUNT = 4  # Reduced number of counting qubits since period is 2
+N_COUNT = 12  # Reduced number of counting qubits since period is 2
 
 def c_amod77(a, power):
     """
@@ -115,8 +115,8 @@ counts_dict = pub_result.data.c.get_counts()  # 'c' is the auto-named classical 
 shots_used = sum(counts_dict.values())
 counts_prob = {bitstring: c / shots_used for bitstring, c in counts_dict.items()}
 
-print("\n===== Top 10 Measurement Results =====")
-sorted_counts = sorted(counts_prob.items(), key=lambda x: x[1], reverse=True)[:10]
+print("\n===== Top 100 Measurement Results =====")
+sorted_counts = sorted(counts_prob.items(), key=lambda x: x[1], reverse=True)[:100]
 
 for i, (bitstring, prob) in enumerate(sorted_counts, 1):
     decimal = int(bitstring, 2)
@@ -129,8 +129,9 @@ for i, (bitstring, prob) in enumerate(sorted_counts, 1):
     r = frac.denominator
     s = frac.numerator
     print(f"   Fraction: {s}/{r}")
+
     
-    if r % 2 == 0:  # Only check even periods
+    if (r//2)% 2 != 0:  # Only check even periods when r divided by two is not even
         guess1 = gcd(a**(r//2) - 1, N)
         guess2 = gcd(a**(r//2) + 1, N)
         print(f"   Period r={r}:")
@@ -139,7 +140,8 @@ for i, (bitstring, prob) in enumerate(sorted_counts, 1):
         if guess1 not in [1, N] or guess2 not in [1, N]:
             print(f"   Found factors! {guess1} and {guess2}")
     else:
-        print(f"   Skipping period r={r} (not even)")
+        print(f"   Skipping period r={r} (not even and r/2 is not odd)")
     print("   " + "-" * 40)
+    
 
 print("\nDone!")
